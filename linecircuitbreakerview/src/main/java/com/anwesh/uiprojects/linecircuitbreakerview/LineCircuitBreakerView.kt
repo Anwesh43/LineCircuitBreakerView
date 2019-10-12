@@ -200,4 +200,13 @@ class LineCircuitBreakerView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : LineCircuitBreakerView {
+            val view : LineCircuitBreakerView = LineCircuitBreakerView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }

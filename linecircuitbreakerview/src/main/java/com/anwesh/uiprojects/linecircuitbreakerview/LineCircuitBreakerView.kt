@@ -13,12 +13,37 @@ import android.graphics.Color
 import android.graphics.Canvas
 
 val nodes : Int = 5
-val scGap : Float = 0.01f
+val scGap : Float = 0.02f
 val strokeFactor : Int = 90
 val delay : Long = 20
 val foreColor : Int = Color.parseColor("#9C27B0")
 val backColor : Int = Color.parseColor("#BDBDBD")
+val lSizeFactor : Float = 3f
+val deg : Float = 45f
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
+
+fun Canvas.drawLineCircuit(size : Float, scale : Float, paint : Paint) {
+    val lSize : Float = (size * scale.divideScale(0, 2)) / lSizeFactor
+    save()
+    drawLine(0f, 0f, 0f, (size - lSize) * scale.divideScale(0, 2), paint)
+    translate(0f, size - lSize)
+    rotate(45f * scale.divideScale(1, 2))
+    drawLine(0f, 0f, 0f, lSize, paint)
+    restore()
+}
+
+fun Canvas.drawLCBNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val size : Float = h / (nodes)
+    paint.color = foreColor
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    save()
+    translate(w / 2, size * i)
+    drawLineCircuit(size, scale, paint)
+    restore()
+}

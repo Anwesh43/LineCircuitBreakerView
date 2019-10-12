@@ -153,7 +153,7 @@ class LineCircuitBreakerView(ctx : Context) : View(ctx) {
         }
     }
 
-    data class LineCircuitBreak(var i : Int) {
+    data class LineCircuitBreaker(var i : Int) {
 
         private var curr : LCBNode = LCBNode(0)
         private var dir : Int = 1
@@ -173,6 +173,28 @@ class LineCircuitBreakerView(ctx : Context) : View(ctx) {
 
         fun startUpdating(cb : () -> Unit) {
             curr.startUpdating(cb)
+        }
+    }
+
+    data class Renderer(var view : LineCircuitBreakerView) {
+
+        private val animator : Animator = Animator(view)
+        private val lcb : LineCircuitBreaker = LineCircuitBreaker(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            lcb.draw(canvas, paint)
+            animator.animate {
+                lcb.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            lcb.startUpdating {
+                animator.start()
+            }
         }
     }
 }

@@ -26,12 +26,12 @@ fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 
 fun Canvas.drawLineCircuit(size : Float, scale : Float, paint : Paint) {
-    val lSize : Float = (size * scale.divideScale(0, 2)) / lSizeFactor
+    val lSize : Float = (size) / lSizeFactor
     save()
-    drawLine(0f, 0f, 0f, (size - lSize) * scale.divideScale(0, 2), paint)
+    drawLine(0f, 0f, 0f, (size - lSize) * scale.divideScale(0, 3), paint)
     translate(0f, size - lSize)
-    rotate(deg * scale.divideScale(1, 2))
-    drawLine(0f, 0f, 0f, lSize, paint)
+    rotate(deg * scale.divideScale(2, 3))
+    drawLine(0f, 0f, 0f, lSize * scale.divideScale(1, 3), paint)
     restore()
 }
 
